@@ -1,84 +1,84 @@
-ViLID: A Rationale-Enhanced Vision-Language Inconsistency Detector for Multimodal Misinformation
+# ViLID (Anonymous Repo for Peer Review)
 
+This repository contains the code for the paper **"ViLID: A Rationale-Enhanced Vision-Language Inconsistency Detector for Multimodal Misinformation"**. ViLID is a novel framework for detecting nuanced misinformation by identifying fine-grained semantic misalignments between text and images. The system leverages AI-generated rationales to perform a human-like reasoning process, augmented by a principled cross-modal inconsistency score and a novel alignment regularization objective to enhance robustness and performance.
 
-This repository contains the official implementation for the paper: "ViLID: A Rationale-Enhanced Vision-Language Inconsistency Detector for Multimodal Misinformation".
+![vilid_architecture](https://i.imgur.com/GQqxS3P.png)
 
-ViLID is a novel framework designed to identify fine-grained semantic misalignments between text and images in multimodal content. It addresses the challenge of detecting nuanced misinformation by integrating direct feature-level inconsistency with higher-order reasoning based on AI-generated rationales.
+## Core Idea
 
-📜 Abstract
-The proliferation of multimodal misinformation, characterized by the integration of text and images to create deceptive narratives, presents a significant societal challenge. To fill this gap, we introduce ViLID, a novel framework that excels at identifying fine-grained semantic misalignments between text and images. Key contributions include: a principled cross-modal inconsistency score; a rationale-augmented reasoning module utilizing LLMs to produce explicit textual and visual explanations; and a novel alignment regularization term to enhance model robustness. Extensive evaluations on the Fakeddit and MMFakeBench benchmarks demonstrate that ViLID achieves state-of-the-art performance in misinformation detection.
+The core of ViLID lies in its dual-pathway alignment analysis, which allows the system to:
+* Quantify inconsistency at both the raw feature level ($S_{inc}$) and the higher-order semantic level ($S_r$) using AI-generated rationales.
+* Integrate explicit reasoning into the detection process by comparing explanations of what the text claims versus what the image depicts.
+* Utilize a novel alignment regularization loss ($L_{align}$) to enforce semantic consistency for truthful content, guiding the model to learn more robust and generalizable representations.
+* Achieve state-of-the-art performance on challenging multimodal misinformation benchmarks.
 
-🏗️ Model Architecture
-ViLID's architecture uses a dual-pathway analysis to detect inconsistencies. As shown in the diagram below, every text-image pair is processed through both a Non-Reasoning Pathway (for direct feature extraction) and a Reasoning Pathway (which uses LLMs to generate and encode rationales). The features and inconsistency scores from both pathways are then combined in a fusion transformer and passed to a classifier to make the final prediction.
+## Repository Structure
 
-Figure 1: High-level overview of the ViLID architecture.
+The main components of this repository are organized as follows:
 
-✨ Key Features
-Rationale-Augmented Reasoning: Integrates LLM-generated rationales to capture higher-order semantic inconsistencies between text and image explanations.
+* `main.py`: The primary script to run training and evaluation. It handles data loading, model initialization, training loops, and final evaluation.
+* `model.py`: Defines the core neural network architectures, including:
+    * `TextEncoder` & `ImageEncoder`: Encapsulate the CLIP-based encoders for processing text and images.
+    * `CrossModalAttention`: Implements the fusion transformer that integrates embeddings from text, images, and their corresponding rationales.
+    * `ViLID`: The main model class that combines all components, calculates inconsistency scores, and makes final predictions.
+    * `ViLIDLoss`: Implements the joint loss function, including the Binary Cross-Entropy loss and the custom alignment regularization term.
+* `data_utils.py`: Contains utilities for dataset handling, including loading data from JSON files and managing image caching.
+* `generate_rationales.py`: A script for generating text and image rationales using Vision-Language Models (VLMs) like Llama and Qwen.
+* **Configuration Files (`configs/*.json`)**: JSON files used to specify all experiment parameters, including dataset paths, model hyperparameters, optimizer settings, and training configurations.
 
-Dual Inconsistency Scores: Computes two separate scores: $S_{inc}$ for direct feature mismatch and $S_{r}$ for rationale-level mismatch, providing the model with explicit alignment signals.
+## Setup and Installation
 
-Alignment Regularization: A novel loss term ($L_{align}$) encourages the model to learn consistent representations for truthful data, improving robustness and generalization.
+1.  **Clone the repository.**
+2.  **Python Environment:** A Python environment (e.g., Conda or venv) is recommended. The code is developed with Python 3.9+.
+3.  **Install Dependencies:** Install the required Python packages from `requirements.txt`. Key dependencies include:
+    * `torch` (PyTorch)
+    * `transformers` (Hugging Face Transformers)
+    * `pandas`
+    * `numpy`
+    * `scikit-learn`
+    * `Pillow` (PIL)
 
-State-of-the-Art Performance: Achieves SOTA performance on challenging benchmarks like Fakeddit and MMFakeBench.
+    You can typically install these using pip:
+    ```bash
+    pip install -r requirements.txt
+    ```
+    *(Note: Ensure PyTorch is installed according to your CUDA version if GPU support is needed.)*
 
-⚙️ Setup and Installation
-To get started, clone the repository and set up the Conda environment using the provided files.
+## Running the Experiments
 
-# 1. Clone the repository
-git clone https://github.com/your-username/ViLID.git
-cd ViLID
+1.  **Prepare the Datasets:**
+    * The experiments are designed for the **Fakeddit** and **MMFakeBench** datasets. For generalization, **M3A** is used.
+    * Download the datasets from their original sources and place them in your data directory.
 
-# 2. Create and activate the Conda environment
-conda create -n vilid python=3.9
-conda activate vilid
+2.  **Generate Rationales:**
+    * The model requires pre-generated rationales. You can use the provided `generate_rationales.py` script to generate them using a VLM of your choice.
+    * Alternatively, download our pre-generated rationales (`[LINK_HERE]`) and place the resulting `.json` file in the appropriate data directory.
 
-# 3. Install dependencies
-pip install -r requirements.txt
+3.  **Configure Your Experiment:**
+    * Modify a `.json` configuration file in the `configs/` directory (e.g., `train_mmfakebench_llama.json`).
+    * Update the file paths (`data_file`, `image_cache_dir`, `output_dir`, etc.) to match your local environment.
 
-📊 Datasets
-Our experiments use the following datasets. Please follow the instructions from the original sources to download them.
+4.  **Run the Main Script:**
+    Execute the `main.py` script, providing the path to your configuration file and the desired mode (`train` or `eval`).
+    ```bash
+    # To train a model
+    python main.py --config_path configs/your_train_config.json --mode train
 
-Fakeddit: A large-scale multimodal dataset from Reddit. You can find more information in the original paper by Nakamura et al. (2019). Due to its size, we use a 25% stratified sample for our experiments.
+    # To evaluate a trained model
+    python main.py --config_path configs/your_eval_config.json --mode eval --eval_model /path/to/your/checkpoint.pth
+    ```
 
-MMFakeBench: A modern benchmark designed with mixed-source misinformation. More details are available in the paper by Liu et al. (2024).
+## Output
 
-M3A: Used for our zero-shot cross-domain evaluation. See Xu et al. (2024) for access details.
+The script generates several outputs, saved in the directory specified by `output_dir` in the configuration file:
 
-Pre-generated Rationales
-Our model relies on pre-generated rationales for training. We provide the rationales used in our experiments, which were generated offline using Llama-3.2-11B-Vision-Instruct and Qwen2.5-VL-7B-Instruct. You can download them from the link below and place them in the ./data/ directory.
+* **Log files (`.log`):** Detailed logs of the training and evaluation process.
+* **Configuration file (`config.json`):** A copy of the exact configuration used for the run.
+* **Model Checkpoints (`.pth`):** Saved model weights from the best-performing epoch (based on validation F1-score).
+* **Evaluation Results (`test_results.json`):** A JSON file containing the final metrics (Accuracy, Precision, Recall, F1-Score) on the test set.
 
-# [Link to download pre-generated rationales will be provided here]
+## Notes for Reviewers
+This repository is provided for anonymous peer review. The code implements the ViLID framework and the experimental setup described in the submitted paper. The provided configuration files allow for reproducing the reported experiments.
 
-🚀 Training and Evaluation
-Training and evaluation are handled by a single script, controlled by a configuration file.
-
-Training
-To train a new ViLID model, modify a configuration file in the ./configs/ directory to specify your dataset paths and hyperparameters, then run:
-
-python main.py --config_path ./configs/train_mmfakebench_llama.json --mode train
-
-This will start the training process, save checkpoints to the directory specified in your config, and log results.
-
-Evaluation
-To evaluate a trained model, use the eval mode and provide the path to the model checkpoint.
-
-python main.py --config_path ./configs/eval_mmfakebench_llama.json --mode eval --eval_model /path/to/your/checkpoint.pth
-
-📈 Results
-ViLID establishes a new state-of-the-art on both Fakeddit and MMFakeBench, surpassing strong baselines like MVAE and SNIFFER. Our dual-signal methodology enhances accuracy by 8.4% on Fakeddit and 12.4% on MMFakeBench compared to MVAE.
-
-Ablation studies confirm that all components are crucial. The removal of the alignment loss or the rationale pathway leads to a significant drop in performance, demonstrating their essential role in the model's success.
-
-✍️ Citation
-If you find this work useful for your research, please cite our paper:
-
-@inproceedings{ViLID2026,
-  title={{ViLID: A Rationale-Enhanced Vision-Language Inconsistency Detector for Multimodal Misinformation}},
-  author={Anonymous},
-  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
-  year={2026}
-}
-
-📜 License
-This project is licensed under the MIT License. See the LICENSE file for details.
+## Reference
+[1] Radford, Alec, et al. "Learning transferable visual models from natural language supervision." *International conference on machine learning*. PMLR, 2021.
