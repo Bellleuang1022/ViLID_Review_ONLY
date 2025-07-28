@@ -2,7 +2,8 @@
 
 This repository contains the code for the paper **"ViLID: A Rationale-Enhanced Vision-Language Inconsistency Detector for Multimodal Misinformation"**. ViLID is a novel framework for detecting nuanced misinformation by identifying fine-grained semantic misalignments between text and images. The system leverages AI-generated rationales to perform a human-like reasoning process, augmented by a principled cross-modal inconsistency score and a novel alignment regularization objective to enhance robustness and performance.
 
-[ViLID_pipeline.pdf](https://github.com/user-attachments/files/21478193/ViLID_pipeline.pdf)
+
+<img width="6214" height="3382" alt="ViLID_Pipeline" src="https://github.com/user-attachments/assets/e87b916e-c028-43fc-897f-deff57b01f5c" />
 
 
 ## Core Idea
