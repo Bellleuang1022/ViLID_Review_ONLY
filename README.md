@@ -26,8 +26,10 @@ The main components of this repository are organized as follows:
     * `ViLID`: The main model class that combines all components, calculates inconsistency scores, and makes final predictions.
     * `ViLIDLoss`: Implements the joint loss function, including the Binary Cross-Entropy loss and the custom alignment regularization term.
 * `data_utils.py`: Contains utilities for dataset handling, including loading data from JSON files and managing image caching.
-* `generate_rationales.py`: A script for generating text and image rationales using Vision-Language Models (VLMs) like Llama and Qwen.
-* **Configuration Files (`configs/*.json`)**: JSON files used to specify all experiment parameters, including dataset paths, model hyperparameters, optimizer settings, and training configurations.
+* `train.sh`: Slurm script for training with parameters and configs.
+* `run_train.sh`: Slurm script to submit all training jobs.
+* `test.sh`: Slurm script for testing with parameters and configs.
+* `run_test.sh`: Slurm script to submit all testing jobs.
 
 ## Setup and Installation
 
@@ -43,7 +45,7 @@ The main components of this repository are organized as follows:
 
     You can typically install these using pip:
     ```bash
-    pip install -r requirements.txt
+    conda env create -f ViLID.yml
     ```
     *(Note: Ensure PyTorch is installed according to your CUDA version if GPU support is needed.)*
 
@@ -54,21 +56,19 @@ The main components of this repository are organized as follows:
     * Download the datasets from their original sources and place them in your data directory.
 
 2.  **Generate Rationales:**
-    * The model requires pre-generated rationales. You can use the provided `generate_rationales.py` script to generate them using a VLM of your choice.
-    * Alternatively, download our pre-generated rationales (`[LINK_HERE]`) and place the resulting `.json` file in the appropriate data directory.
+    * The model requires pre-generated rationales. You can use the provided prompts and HF models to generate rationales.
 
 3.  **Configure Your Experiment:**
-    * Modify a `.json` configuration file in the `configs/` directory (e.g., `train_mmfakebench_llama.json`).
-    * Update the file paths (`data_file`, `image_cache_dir`, `output_dir`, etc.) to match your local environment.
+    * Modify the `train.sh` and `test.sh` files.
 
 4.  **Run the Main Script:**
     Execute the `main.py` script, providing the path to your configuration file and the desired mode (`train` or `eval`).
     ```bash
     # To train a model
-    python main.py --config_path configs/your_train_config.json --mode train
+    python3 your path/ViLID/main.py
 
     # To evaluate a trained model
-    python main.py --config_path configs/your_eval_config.json --mode eval --eval_model /path/to/your/checkpoint.pth
+    python3 your path/ViLID/test.py
     ```
 
 ## Output
@@ -83,5 +83,3 @@ The script generates several outputs, saved in the directory specified by `outpu
 ## Notes for Reviewers
 This repository is provided for anonymous peer review. The code implements the ViLID framework and the experimental setup described in the submitted paper. The provided configuration files enable the reproduction of the reported experiments.
 
-## Reference
-[1] Radford, Alec, et al. "Learning transferable visual models from natural language supervision." *International conference on machine learning*. PMLR, 2021.
