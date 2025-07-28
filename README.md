@@ -2,9 +2,11 @@
 
 This repository contains the code for the paper **"ViLID: A Rationale-Enhanced Vision-Language Inconsistency Detector for Multimodal Misinformation"**. ViLID is a novel framework for detecting nuanced misinformation by identifying fine-grained semantic misalignments between text and images. The system leverages AI-generated rationales to perform a human-like reasoning process, augmented by a principled cross-modal inconsistency score and a novel alignment regularization objective to enhance robustness and performance.
 
-![vilid_architecture](https://i.imgur.com/GQqxS3P.png)
+[ViLID_pipeline.pdf](https://github.com/user-attachments/files/21478193/ViLID_pipeline.pdf)
+
 
 ## Core Idea
+
 
 The core of ViLID lies in its dual-pathway alignment analysis, which allows the system to:
 * Quantify inconsistency at both the raw feature level ($S_{inc}$) and the higher-order semantic level ($S_r$) using AI-generated rationales.
@@ -29,7 +31,7 @@ The main components of this repository are organized as follows:
 ## Setup and Installation
 
 1.  **Clone the repository.**
-2.  **Python Environment:** A Python environment (e.g., Conda or venv) is recommended. The code is developed with Python 3.9+.
+2.  **Python Environment:** A Python environment (e.g., Conda or venv) is recommended. The code is developed using Python 3.9 or later.
 3.  **Install Dependencies:** Install the required Python packages from `requirements.txt`. Key dependencies include:
     * `torch` (PyTorch)
     * `transformers` (Hugging Face Transformers)
@@ -78,7 +80,7 @@ The script generates several outputs, saved in the directory specified by `outpu
 * **Evaluation Results (`test_results.json`):** A JSON file containing the final metrics (Accuracy, Precision, Recall, F1-Score) on the test set.
 
 ## Notes for Reviewers
-This repository is provided for anonymous peer review. The code implements the ViLID framework and the experimental setup described in the submitted paper. The provided configuration files allow for reproducing the reported experiments.
+This repository is provided for anonymous peer review. The code implements the ViLID framework and the experimental setup described in the submitted paper. The provided configuration files enable the reproduction of the reported experiments.
 
 ## Reference
 [1] Radford, Alec, et al. "Learning transferable visual models from natural language supervision." *International conference on machine learning*. PMLR, 2021.
