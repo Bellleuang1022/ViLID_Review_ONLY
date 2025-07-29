@@ -1,4 +1,4 @@
-name: /blue/woodard/share/ViLID/env/VILID
+name: your path/VILID
 channels:
   - anaconda
   - conda-forge
@@ -336,4 +336,4 @@ dependencies:
       - torchvision==0.22.0+cu128
       - transformers==4.53.0.dev0
       - triton==3.3.0
-prefix: /blue/woodard/share/ViLID/env/VILID
+prefix: your path/VILID
