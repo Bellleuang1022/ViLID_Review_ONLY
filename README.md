@@ -35,7 +35,7 @@ The main components of this repository are organized as follows:
 
 1.  **Clone the repository.**
 2.  **Python Environment:** A Python environment (e.g., Conda or venv) is recommended. The code is developed using Python 3.9 or later.
-3.  **Install Dependencies:** Install the required Python packages from `requirements.txt`. Key dependencies include:
+3.  **Install Dependencies:** Install the required Python packages from `ViLID.yml`. Key dependencies include:
     * `torch` (PyTorch)
     * `transformers` (Hugging Face Transformers)
     * `pandas`
@@ -62,7 +62,7 @@ The main components of this repository are organized as follows:
     * Modify the `train.sh` and `test.sh` files.
 
 4.  **Run the Main Script:**
-    Execute the `main.py` script, providing the path to your configuration file and the desired mode (`train` or `eval`).
+    Execute the `main.py` and `test.py` scripts.
     ```bash
     # To train a model
     python3 your path/ViLID/main.py
