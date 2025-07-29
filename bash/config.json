@@ -1,0 +1,21 @@
+{
+  "text_encoder_name": "openai/clip-vit-base-patch32",
+  "image_encoder_name": "openai/clip-vit-base-patch32",
+  "hidden_size": 512,
+  "num_fusion_layers": 4,
+  "num_fusion_heads": 8,
+  "dropout": 0.1,
+  "gamma": 0.1,
+  "beta": 5.0,
+  "freeze_encoders": true,
+  "text_col": "text",
+  "image_col": "image_url",
+  "label_col": "label",
+  "text_rationale_col": "text_rationale",
+  "image_rationale_col": "image_rationale",
+  "id_col": "id",
+  "image_store_way": "URL",
+  "image_dir": null,
+  "max_text_length": 512,
+  "max_rationale_length": 512
+}
